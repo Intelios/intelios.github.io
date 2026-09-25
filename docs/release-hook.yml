@@ -1,0 +1,20 @@
+# Add this workflow to each app repo (e.g. .github/workflows/site-rebuild.yml)
+# so publishing a release rebuilds intelios.dev immediately.
+#
+# Store the Cloudflare Pages deploy hook URL as the CLOUDFLARE_DEPLOY_HOOK
+# secret in each repo (repo Settings → Secrets and variables → Actions).
+
+name: Rebuild website on release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  rebuild-site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare Pages deploy
+        run: curl -fsSL -X POST "$CLOUDFLARE_DEPLOY_HOOK"
+        env:
+          CLOUDFLARE_DEPLOY_HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}

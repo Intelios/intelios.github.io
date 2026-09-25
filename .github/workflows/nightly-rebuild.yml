@@ -1,0 +1,19 @@
+name: Scheduled rebuild
+
+# Refreshes the site so latest GitHub release data stays current.
+# Requires a Cloudflare Pages deploy hook URL stored as the
+# CLOUDFLARE_DEPLOY_HOOK repository secret.
+
+on:
+  schedule:
+    - cron: '17 5 * * *' # daily ~05:17 UTC
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare Pages deploy
+        run: curl -fsSL -X POST "$CLOUDFLARE_DEPLOY_HOOK"
+        env:
+          CLOUDFLARE_DEPLOY_HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}

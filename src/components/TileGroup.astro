@@ -1,0 +1,25 @@
+---
+import type { ReleaseInfo, TileGroup } from '../lib/app-schema';
+import { releaseKey } from '../lib/github';
+import Tile from './Tile.astro';
+
+interface Props {
+  group: TileGroup;
+  releases: Map<string, ReleaseInfo>;
+  indexOffset: number;
+}
+const { group, releases, indexOffset } = Astro.props;
+---
+
+<section class="tile-group">
+  <h2 class="tile-group-label">{group.name}</h2>
+  <div class="tile-grid">
+    {group.tiles.map((tile, i) => (
+      <Tile
+        tile={tile}
+        index={indexOffset + i}
+        release={tile.kind === 'app' ? releases.get(releaseKey(tile.app) ?? '') : undefined}
+      />
+    ))}
+  </div>
+</section>

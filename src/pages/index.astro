@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import StartScreen from '../components/StartScreen.astro';
+import { apps } from '../apps';
+import { getReleasesFor } from '../lib/github';
+
+const releases = await getReleasesFor(apps);
+---
+
+<Base title="Intelios">
+  <StartScreen releases={releases} />
+</Base>

@@ -1,0 +1,29 @@
+{
+  "Intelios/Media-Logger": {
+    "version": "4.4.2",
+    "date": "2026-09-25",
+    "htmlUrl": "https://github.com/Intelios/Media-Logger/releases/tag/4.4.2",
+    "zipballUrl": "https://api.github.com/repos/Intelios/Media-Logger/zipball/4.4.2",
+    "notes": "New Content/Features:\r\n- Redesigned the Random Pick UI with an entirely new card based UI.\r\n\r\n**Full Changelog**: https://github.com/Intelios/Media-Logger/compare/4.4.1...4.4.2",
+    "assets": [],
+    "fetchedAt": "2026-09-25T20:57:34.786Z"
+  },
+  "Intelios/wackchatter": {
+    "version": "2.2.2",
+    "date": "2026-09-25",
+    "htmlUrl": "https://github.com/Intelios/wackchatter/releases/tag/2.2.2",
+    "zipballUrl": "https://api.github.com/repos/Intelios/wackchatter/zipball/2.2.2",
+    "notes": "- Further Improvements to Preset Co-Creator all in the testing panel:\r\n  - In the testing panel can now choose your current preset your working on or any other preset in your library or references.\r\n  - Can now batch multiple requests from the testing panel to send to your co-creator.\r\n  - Can now have multiple chats ongoing in the testing panel.\r\n\r\n**Full Changelog**: https://github.com/Intelios/wackchatter/compare/2.2.1...2.2.2",
+    "assets": [],
+    "fetchedAt": "2026-09-25T20:57:35.059Z"
+  },
+  "Intelios/TokenTrail": {
+    "version": "1.10.1",
+    "date": "2026-09-22",
+    "htmlUrl": "https://github.com/Intelios/TokenTrail/releases/tag/1.10.1",
+    "zipballUrl": "https://api.github.com/repos/Intelios/TokenTrail/zipball/1.10.1",
+    "notes": "- Claude Opus 5.5 pricing added\r\n- GPT 6 Sol pricing added\r\n- GPT 6 Luna pricing added\r\n- Improved detection of project folders & sub directories within projects.\r\n\r\n**Full Changelog**: https://github.com/Intelios/TokenTrail/compare/1.10...1.10.1",
+    "assets": [],
+    "fetchedAt": "2026-09-25T20:57:35.280Z"
+  }
+}

@@ -1,0 +1,27 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = 'Intelios — apps for logging media, roleplay, coding agents, and token tracking.' } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#101014" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" href="/fonts/selawk.woff" as="font" type="font/woff" crossorigin />
+    <link rel="preload" href="/fonts/selawkl.woff" as="font" type="font/woff" crossorigin />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+<style is:global>
+  @import '../styles/tokens.css';
+  @import '../styles/metro.css';
+</style>

@@ -1,0 +1,34 @@
+---
+import { marked } from 'marked';
+import type { AppDefinition, ReleaseInfo } from '../lib/app-schema';
+import { formatDate } from '../lib/github';
+
+interface Props {
+  app: AppDefinition;
+  release?: ReleaseInfo;
+}
+const { app, release } = Astro.props;
+
+let html = '';
+if (release?.notes) {
+  html = await marked.parse(release.notes, { async: true, gfm: true });
+}
+const releasesUrl = app.github ? `https://github.com/${app.github.owner}/${app.github.repo}/releases` : null;
+---
+
+{release ? (
+  <>
+    <div class="release-head">
+      <h2 class="release-version">{release.version}</h2>
+      <span class="release-date">{formatDate(release.date)}</span>
+    </div>
+    {html ? <div class="release-body" set:html={html} /> : null}
+    {releasesUrl && (
+      <a class="release-link" href={releasesUrl} target="_blank" rel="noopener noreferrer">
+        All releases →
+      </a>
+    )}
+  </>
+) : (
+  <p class="dl-note">{app.status === 'in-development' ? 'No releases yet.' : 'Release notes unavailable.'}</p>
+)}

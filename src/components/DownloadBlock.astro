@@ -1,0 +1,61 @@
+---
+import type { AppDefinition, ReleaseInfo } from '../lib/app-schema';
+import { formatDate, formatSize, platformLabel } from '../lib/github';
+
+interface Props {
+  app: AppDefinition;
+  release?: ReleaseInfo;
+}
+const { app, release } = Astro.props;
+const dl = app.download;
+
+const assetsByPlatform = release
+  ? [...new Set(release.assets.filter((a) => a.platform !== 'other').map((a) => a.platform))]
+  : [];
+---
+
+{app.status === 'in-development' ? (
+  <div class="dl-list">
+    <span class="dl-btn dl-btn--ghost">{app.statusNote ?? 'In development'}</span>
+    {dl.kind === 'none' && dl.note && <p class="dl-note">{dl.note}</p>}
+  </div>
+) : dl.kind === 'source-zip' ? (
+  <div class="dl-list">
+    {release ? (
+      <a class="dl-btn" href={release.zipballUrl}>
+        {dl.label ?? 'Download'}
+        <span class="dl-meta">{release.version} · {formatDate(release.date)}</span>
+      </a>
+    ) : app.github ? (
+      <a class="dl-btn" href={`https://github.com/${app.github.owner}/${app.github.repo}/releases/latest`} target="_blank" rel="noopener noreferrer">
+        View release on GitHub
+      </a>
+    ) : null}
+    {dl.note && <p class="dl-note">{dl.note}</p>}
+  </div>
+) : dl.kind === 'assets' ? (
+  <div class="dl-list">
+    {release && assetsByPlatform.length > 0 ? (
+      release.assets
+        .filter((a) => a.platform !== 'other')
+        .map((a) => (
+          <a class="dl-btn" href={a.url}>
+            Download for {platformLabel[a.platform as 'macos' | 'windows' | 'linux']}
+            <span class="dl-meta">{formatSize(a.size)} · {release.version}</span>
+          </a>
+        ))
+    ) : app.github ? (
+      <a class="dl-btn" href={`https://github.com/${app.github.owner}/${app.github.repo}/releases/latest`} target="_blank" rel="noopener noreferrer">
+        View release on GitHub
+      </a>
+    ) : null}
+    {release && assetsByPlatform.length > 0 && (
+      <p class="dl-note">Version {release.version} · {formatDate(release.date)}</p>
+    )}
+    {dl.note && <p class="dl-note">{dl.note}</p>}
+  </div>
+) : (
+  <div class="dl-list">
+    {dl.note && <p class="dl-note">{dl.note}</p>}
+  </div>
+)}

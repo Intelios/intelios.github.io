@@ -1,0 +1,31 @@
+---
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  screenshots: ImageMetadata[];
+  appName: string;
+}
+const { screenshots, appName } = Astro.props;
+
+const items = await Promise.all(
+  screenshots.map(async (shot) => ({
+    thumb: shot,
+    full: (await getImage({ src: shot, width: 1600, format: 'webp' })).src,
+  })),
+);
+---
+
+{items.length > 0 ? (
+  <div class="gallery">
+    {items.map((item, i) => (
+      <button class="gallery-item" data-full={item.full} aria-label={`${appName} screenshot ${i + 1}, open full size`}>
+        <Image src={item.thumb} width={600} format="webp" alt={`${appName} screenshot ${i + 1}`} loading="lazy" />
+      </button>
+    ))}
+  </div>
+) : (
+  <div class="gallery">
+    <div class="gallery-empty">Screenshots coming soon</div>
+  </div>
+)}

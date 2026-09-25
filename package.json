@@ -1,0 +1,21 @@
+{
+  "name": "intelios-site",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "7.3.3",
+    "marked": "18.0.13"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@types/node": "^24.13.6",
+    "typescript": "5.9.3"
+  }
+}

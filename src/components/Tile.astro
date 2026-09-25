@@ -1,0 +1,110 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { ReleaseInfo, StartTile } from '../lib/app-schema';
+import { formatDate } from '../lib/github';
+import { getIcon, getScreenshots } from '../lib/files';
+
+interface Props {
+  tile: StartTile;
+  index: number;
+  release?: ReleaseInfo;
+}
+const { tile, index, release } = Astro.props;
+
+interface Face {
+  kind: 'brand' | 'version' | 'shot';
+  shot?: ImageMetadata;
+}
+
+let name: string;
+let color: string;
+let text: string;
+let size: string;
+let href: string;
+let external = false;
+let icon: ImageMetadata | string | undefined;
+let glyph: string | undefined;
+let glyphFill = false;
+const faces: Face[] = [{ kind: 'brand' }];
+let statusNote: string | undefined;
+let version: string | undefined;
+let versionDate: string | undefined;
+
+if (tile.kind === 'app') {
+  const app = tile.app;
+  name = app.name;
+  color = app.color;
+  text = app.text;
+  size = app.tile;
+  href = `/apps/${app.slug}`;
+  icon = getIcon(app.slug);
+  glyph = app.glyph;
+  const shots = getScreenshots(app.slug);
+  if (shots.length > 0) faces.push({ kind: 'shot', shot: shots[0] });
+  if (app.status === 'in-development') {
+    statusNote = app.statusNote ?? 'In development';
+    faces.push({ kind: 'version' });
+  } else if (release) {
+    version = release.version;
+    versionDate = formatDate(release.date);
+    faces.splice(1, 0, { kind: 'version' });
+  }
+} else {
+  name = tile.name;
+  color = tile.color;
+  text = tile.text;
+  size = tile.tile;
+  href = tile.href;
+  external = tile.external ?? false;
+  glyph = tile.glyph;
+  glyphFill = tile.glyphFill ?? false;
+}
+
+const iconIsVector = typeof icon === 'string' || icon?.format === 'svg';
+const iconSrc = typeof icon === 'string' ? icon : icon?.src;
+const iconMeta = icon && !iconIsVector ? (icon as ImageMetadata) : undefined;
+---
+
+<a
+  class:list={['tile', `tile--${size}`]}
+  style={`--tile-color:${color};--i:${index}`}
+  data-text={text}
+  data-live={faces.length > 1 || undefined}
+  href={href}
+  {...external ? { target: '_blank', rel: 'noopener noreferrer' } : {}}
+>
+  <div class="tile-inner">
+    {faces.map((face, i) => (
+      <div class:list={['tile-face', i === 0 && 'is-front']}>
+        {face.kind === 'shot' && face.shot ? (
+          <>
+            <Image class="tile-shot" src={face.shot} width={1024} format="webp" alt="" loading="lazy" />
+            <span class="tile-name tile-name--band">{name}</span>
+          </>
+        ) : face.kind === 'version' ? (
+          <>
+            <span class="tile-live-line">{version ?? statusNote ?? ''}</span>
+            <span class="tile-live-sub">{version ? versionDate : ''}</span>
+            <span class="tile-name">{name}</span>
+          </>
+        ) : (
+          <>
+            <span class="tile-brand">
+              {iconIsVector ? (
+                <img src={iconSrc} alt="" loading="eager" />
+              ) : iconMeta ? (
+                <Image src={iconMeta} width={220} format="webp" alt="" loading="eager" />
+              ) : glyph ? (
+                <svg class:list={['tile-glyph', glyphFill && 'tile-glyph--fill']} viewBox="0 0 24 24" aria-hidden="true">
+                  <path d={glyph} />
+                </svg>
+              ) : null}
+            </span>
+            <span class="tile-name">{name}</span>
+          </>
+        )}
+      </div>
+    ))}
+  </div>
+</a>

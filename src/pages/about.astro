@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import Panorama from '../components/Panorama.astro';
+import { apps } from '../apps';
+---
+
+<Base title="About — Intelios">
+  <Panorama title="About" accent="#0078d7">
+    <section class="pano-section">
+      <h2 class="pano-section-label">Intelios</h2>
+      <div class="prose">
+        <p>
+          Intelios is a small independent software label. The apps here are desktop-first,
+          local-first tools — your data lives on your machine, in formats you can back up
+          and move, with no accounts and no telemetry.
+        </p>
+        <p>
+          Everything is built with TypeScript, Rust, and Tauri, and released through
+          GitHub. New releases ship on a weekly cadence.
+        </p>
+      </div>
+    </section>
+    <section class="pano-section">
+      <h2 class="pano-section-label">Apps</h2>
+      <ul class="app-list">
+        {apps.map((app) => (
+          <li>
+            <a href={`/apps/${app.slug}`} style={`color:${app.pageAccent ?? app.color}`}>
+              <span class="swatch" style={`background:${app.color}`} />{app.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+    <section class="pano-section">
+      <h2 class="pano-section-label">Elsewhere</h2>
+      <ul class="app-list">
+        <li>
+          <a class="release-link" href="https://github.com/Intelios" target="_blank" rel="noopener noreferrer">
+            github.com/Intelios →
+          </a>
+        </li>
+      </ul>
+    </section>
+  </Panorama>
+</Base>

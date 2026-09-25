@@ -1,0 +1,17 @@
+---
+import type { FeatureTile } from '../lib/app-schema';
+
+interface Props {
+  features: FeatureTile[];
+}
+const { features } = Astro.props;
+---
+
+<div class="feature-grid">
+  {features.map((f) => (
+    <div class="feature-tile">
+      <h3>{f.title}</h3>
+      {f.detail && <p>{f.detail}</p>}
+    </div>
+  ))}
+</div>

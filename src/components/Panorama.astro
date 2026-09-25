@@ -1,0 +1,26 @@
+---
+interface Props {
+  title: string;
+  accent: string;
+  accentText?: string;
+}
+const { title, accent, accentText = '#ffffff' } = Astro.props;
+---
+
+<main class="pano" data-hscroll style={`--accent:${accent};--accent-text:${accentText}`}>
+  <header class="pano-head">
+    <a class="back-arrow" href="/" aria-label="Back to Start">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+    </a>
+    <h1 class="pano-title">{title}</h1>
+  </header>
+  <div class="pano-sections">
+    <slot />
+  </div>
+</main>
+
+<script>
+  import { initHorizontalScroll, initLightbox } from '../scripts/metro';
+  initHorizontalScroll();
+  initLightbox();
+</script>

@@ -1,0 +1,68 @@
+---
+import Base from '../../layouts/Base.astro';
+import Panorama from '../../components/Panorama.astro';
+import DownloadBlock from '../../components/DownloadBlock.astro';
+import Gallery from '../../components/Gallery.astro';
+import FeatureTiles from '../../components/FeatureTiles.astro';
+import ReleaseNotes from '../../components/ReleaseNotes.astro';
+import { apps } from '../../apps';
+import { getReleasesFor, releaseKey, platformLabel } from '../../lib/github';
+import { getScreenshots } from '../../lib/files';
+import type { AppDefinition, ReleaseInfo } from '../../lib/app-schema';
+
+export function getStaticPaths() {
+  return apps.map((app) => ({ params: { slug: app.slug }, props: { app } }));
+}
+
+interface Props {
+  app: AppDefinition;
+}
+const { app } = Astro.props;
+
+const releases = await getReleasesFor([app]);
+const release: ReleaseInfo | undefined = releases.get(releaseKey(app) ?? '');
+const accent = app.pageAccent ?? app.color;
+const accentText = app.text === 'dark' ? '#12140a' : '#ffffff';
+const screenshots = getScreenshots(app.slug);
+---
+
+<Base title={`${app.name} — Intelios`} description={app.description.slice(0, 160)}>
+  <Panorama title={app.name} accent={accent} accentText={accentText}>
+    <section class="pano-section">
+      <h2 class="pano-section-label">Overview</h2>
+      <p class="pano-desc">{app.description}</p>
+      <div class="meta-row">
+        {app.platforms.map((p) => <span class="meta-chip">{platformLabel[p]}</span>)}
+        {app.license && <span class="meta-chip">{app.license}</span>}
+        <span class:list={['meta-chip', app.status === 'in-development' && 'meta-chip--accent']}>
+          {app.status === 'in-development' ? 'In development' : 'Released'}
+        </span>
+      </div>
+      {app.github && (
+        <a class="release-link" href={`https://github.com/${app.github.owner}/${app.github.repo}`} target="_blank" rel="noopener noreferrer">
+          Source on GitHub →
+        </a>
+      )}
+    </section>
+
+    <section class="pano-section">
+      <h2 class="pano-section-label">{app.status === 'in-development' ? 'Availability' : 'Download'}</h2>
+      <DownloadBlock app={app} release={release} />
+    </section>
+
+    <section class="pano-section pano-section--wide">
+      <h2 class="pano-section-label">Screenshots</h2>
+      <Gallery screenshots={screenshots} appName={app.name} />
+    </section>
+
+    <section class="pano-section pano-section--wide">
+      <h2 class="pano-section-label">Features</h2>
+      <FeatureTiles features={app.features} />
+    </section>
+
+    <section class="pano-section">
+      <h2 class="pano-section-label">Latest release</h2>
+      <ReleaseNotes app={app} release={release} />
+    </section>
+  </Panorama>
+</Base>
