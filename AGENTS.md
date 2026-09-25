@@ -1,6 +1,7 @@
 # Intelios website
 
-Static site (Astro → `dist/`) deployed to Cloudflare Pages. The design is a
+Static site (Astro → `dist/`) deployed to Cloudflare Workers static assets
+(`wrangler.jsonc` → `assets.directory: ./dist`). The design is a
 Windows 8 Metro Start screen: flat square tiles, horizontal tile groups, light
 typography, no gradients, no rounded corners, no shadows.
 
@@ -11,6 +12,8 @@ typography, no gradients, no rounded corners, no shadows.
   for public repos at build time (see below).
 - `npm run check` — `astro check` type checking.
 - `npm run preview` — serve the built site.
+- `npm run deploy` — `wrangler deploy` (manual deploy; normal deploys go
+  through Workers Builds, see below).
 
 ## Design rules (do not break)
 
@@ -46,17 +49,20 @@ typography, no gradients, no rounded corners, no shadows.
   (60 req/hr) is fine for 3 repos.
 - On success it writes `src/lib/release-cache.json`; on failure it falls
   back to the cached entry, so deploys never break on API errors.
-- **Rebuild on release**: create a Cloudflare Pages deploy hook, store it
-  as `CLOUDFLARE_DEPLOY_HOOK` in each app repo, and add
+- **Rebuild on release**: create a Workers Builds deploy hook (Workers →
+  this worker → Settings → Builds → Deploy hooks), store the URL as
+  `CLOUDFLARE_DEPLOY_HOOK` in each app repo, and add
   `docs/release-hook.yml` there as a workflow. `nightly-rebuild.yml` in
-  this repo is the safety net.
+  this repo is the safety net (same secret needed here too).
 
-## Cloudflare Pages settings
+## Cloudflare Workers settings
 
-- Build command: `npm run build`
-- Output: `dist`
-- Node version: 20+ (set `NODE_VERSION` env if needed)
-- Optional: `GITHUB_TOKEN` env var for authenticated API calls.
+- The repo is connected via Workers Builds: build command `npm run build`,
+  deploy handled by Wrangler using `wrangler.jsonc` (`assets.directory: ./dist`).
+- No Worker script — assets-only; routing serves each route's `index.html`.
+- `_headers` in `public/` is honoured for static asset responses.
+- Node version 20+ (set `NODE_VERSION` env if needed); optional
+  `GITHUB_TOKEN` env var for authenticated GitHub API calls at build.
 
 ## Fonts
 

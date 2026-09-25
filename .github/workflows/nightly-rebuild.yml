@@ -1,7 +1,7 @@
 name: Scheduled rebuild
 
 # Refreshes the site so latest GitHub release data stays current.
-# Requires a Cloudflare Pages deploy hook URL stored as the
+# Requires a Workers Builds deploy hook URL stored as the
 # CLOUDFLARE_DEPLOY_HOOK repository secret.
 
 on:
@@ -13,7 +13,7 @@ jobs:
   rebuild:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Cloudflare Pages deploy
+      - name: Trigger Workers Builds deploy
         run: curl -fsSL -X POST "$CLOUDFLARE_DEPLOY_HOOK"
         env:
           CLOUDFLARE_DEPLOY_HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}
