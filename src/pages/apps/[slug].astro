@@ -7,7 +7,7 @@ import FeatureTiles from '../../components/FeatureTiles.astro';
 import ReleaseNotes from '../../components/ReleaseNotes.astro';
 import { apps } from '../../apps';
 import { getReleasesFor, releaseKey, platformLabel } from '../../lib/github';
-import { getScreenshots } from '../../lib/files';
+import { getIcon, getScreenshots } from '../../lib/files';
 import type { AppDefinition, ReleaseInfo } from '../../lib/app-schema';
 
 export function getStaticPaths() {
@@ -24,10 +24,12 @@ const release: ReleaseInfo | undefined = releases.get(releaseKey(app) ?? '');
 const accent = app.pageAccent ?? app.color;
 const accentText = app.text === 'dark' ? '#12140a' : '#ffffff';
 const screenshots = getScreenshots(app.slug);
+const iconMeta = getIcon(app.slug);
+const iconSrc = typeof iconMeta === 'string' ? iconMeta : iconMeta?.src;
 ---
 
 <Base title={`${app.name} — Intelios`} description={app.description.slice(0, 160)}>
-  <Panorama title={app.name} accent={accent} accentText={accentText}>
+  <Panorama title={app.name} accent={accent} accentText={accentText} icon={iconSrc}>
     <section class="pano-section">
       <h2 class="pano-section-label">Overview</h2>
       <p class="pano-desc">{app.description}</p>

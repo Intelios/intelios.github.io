@@ -207,6 +207,47 @@ img { display: block; }
 .tile:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 .tile[data-text='dark']:hover { outline-color: rgba(0, 0, 0, 0.5); }
 
+/* ---------- Tile launch zoom ---------- */
+
+.tile-ghost { will-change: transform; }
+
+.tile-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--win8-blue);
+  color: #fff;
+}
+.tile-splash.is-dark { color: #12140a; }
+.tile-splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.tile-splash-content img { width: 132px; height: auto; }
+.tile-splash-content svg {
+  width: 96px;
+  height: 96px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tile-splash-content svg.fill { fill: currentColor; stroke: none; }
+.tile-splash-name {
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+/* Returning to Start: the splash shrinks onto its tile, so suppress the
+   usual staggered fly-in — the canvas settle supplies the motion. */
+.tile-returning .tile { animation: none; }
+
 /* ---------- Panorama (app hub) ---------- */
 
 .pano {
@@ -470,5 +511,6 @@ img { display: block; }
   .tile { animation: none; }
   .tile-inner { transition: none; }
   .tile-face { transition: none; }
+  .tile-splash { display: none; }
   html { scroll-behavior: auto; }
 }

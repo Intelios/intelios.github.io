@@ -18,6 +18,75 @@ const { title, description = 'Intelios — apps for logging media, roleplay, cod
     <link rel="preload" href="/fonts/selawkl.woff" as="font" type="font/woff" crossorigin />
   </head>
   <body>
+    <script is:inline>
+      // Tile splash: tile clicks (enter) and back-arrow clicks (exit) leave a
+      // payload in sessionStorage. Cover the page with the tile's colour before
+      // first paint. 'enter' dissolves into the page here; 'exit' is driven by
+      // initTileReturn(), which shrinks the splash onto its tile.
+      (function () {
+        try {
+          var pick = function (key, field) {
+            var raw = sessionStorage.getItem(key);
+            sessionStorage.removeItem(key);
+            if (!raw) return null;
+            var d = JSON.parse(raw);
+            return d && d[field] === location.pathname && Date.now() - d.t < 5000 ? d : null;
+          };
+          var enter = pick('tile-enter', 'path');
+          var back = pick('tile-exit', 'to');
+          var d = enter || back;
+          if (!d || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          var returning = !enter && !!back;
+          var o = document.createElement('div');
+          o.className = 'tile-splash' + (d.dark ? ' is-dark' : '');
+          if (d.color) o.style.background = d.color;
+          if (returning) {
+            o.dataset.from = d.from;
+            document.documentElement.classList.add('tile-returning');
+          }
+          var c = document.createElement('div');
+          c.className = 'tile-splash-content';
+          if (d.icon) {
+            var im = new Image();
+            im.src = d.icon;
+            im.alt = '';
+            c.appendChild(im);
+          } else if (d.glyph) {
+            var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            if (d.glyphFill) svg.classList.add('fill');
+            var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            p.setAttribute('d', d.glyph);
+            svg.appendChild(p);
+            c.appendChild(svg);
+          }
+          if (d.name) {
+            var s = document.createElement('span');
+            s.className = 'tile-splash-name';
+            s.textContent = d.name;
+            c.appendChild(s);
+          }
+          o.appendChild(c);
+          document.body.appendChild(o);
+          if (returning) {
+            // initTileReturn() animates the shrink-and-land; this is a failsafe.
+            setTimeout(function () { o.remove(); }, 2400);
+          } else {
+            if (c.childNodes.length) {
+              c.animate(
+                [{ opacity: '0', transform: 'scale(0.9)' }, { opacity: '1', transform: 'scale(1)' }],
+                { duration: 240, delay: 90, easing: 'cubic-bezier(0.1, 0.9, 0.2, 1)', fill: 'backwards' }
+              );
+            }
+            o.animate(
+              [{ opacity: '1' }, { opacity: '0', transform: 'scale(1.05)' }],
+              { duration: 360, delay: 470, easing: 'ease', fill: 'forwards' }
+            );
+            setTimeout(function () { o.remove(); }, 1200);
+          }
+        } catch (e) { /* no splash */ }
+      })();
+    </script>
     <slot />
   </body>
 </html>
