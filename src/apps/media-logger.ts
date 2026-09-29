@@ -7,7 +7,7 @@ export const mediaLogger: AppDefinition = {
   text: 'light',
   tile: 'wide',
   description:
-    'A desktop media journal for people who want more than a watchlist. Track what you finish, rate it, save artwork locally, organize it into collections, crown yearly winners, plan what\u2019s next with a backlog, and explore your library through filters, profiles, deep stats, and animated year-in-review slideshows. Everything lives in a local SQLite database \u2014 no account, no cloud, no ads.',
+    'This is a media logging application covering various genres and a project I\'ve worked on the longest. It\'s something I personally use every single day to track the shows I watch, the games I play and the things I intend to watch in the future. It\'s got stats, collections, profiles auto generated for you and so much more. I really am proud of this project so I hope you\'ll give it a try and love it as much as I do. Everything is offline, and very few parts of the app connect online and those are all optional.',
   status: 'released',
   platforms: ['macos', 'windows'],
   license: 'Source available',

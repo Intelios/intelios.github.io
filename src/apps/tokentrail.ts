@@ -7,7 +7,7 @@ export const tokenTrail: AppDefinition = {
   text: 'light',
   tile: 'medium',
   description:
-    'One dashboard for all the AI tokens you burn while coding. TokenTrail reads the usage logs your AI tools already write on your machine and turns them into a single picture \u2014 tokens, cost estimates, sessions, projects, and daily trends. No accounts, no setup: open it and your history is there.',
+    'One dashboard for all the AI tokens you use across supported apps. TokenTrail reads the usage logs your AI tools already write on your machine and turns them into the data you can visualise and happily clear those tools cache files and not worry about losing your usage information as TokenTrail has it\'s own data safe and secure from cache wipes. TokenTrail supports countless apps. Free to use & fully open source.',
   status: 'released',
   platforms: ['macos', 'windows', 'linux'],
   license: 'MIT',
