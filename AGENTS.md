@@ -64,7 +64,8 @@ typography, no gradients, no rounded corners, no shadows.
 - The workflow runs on push to `main`, on the daily `17 5 * * *` cron
   (refreshes release data), on manual dispatch, and on the `rebuild`
   `repository_dispatch` event sent by app repos.
-- Node version is set via the action's `node-version` input (20). The
+- Node version is set via the action's `node-version` input (24, matching
+  local dev — Astro 7 requires Node >= 22.12). The
   Actions-provided `GITHUB_TOKEN` is passed to the build, so GitHub API
   calls are authenticated.
 - Served at https://intelios.github.io — the repo name is the user-site
