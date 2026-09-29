@@ -7,8 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check",
-    "deploy": "wrangler deploy"
+    "check": "astro check"
   },
   "dependencies": {
     "astro": "7.3.3",
@@ -17,7 +16,6 @@
   "devDependencies": {
     "@astrojs/check": "0.9.10",
     "@types/node": "^24.13.6",
-    "typescript": "5.9.3",
-    "wrangler": "^4.134.0"
+    "typescript": "5.9.3"
   }
 }

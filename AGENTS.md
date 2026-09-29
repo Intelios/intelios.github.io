@@ -1,7 +1,8 @@
 # Intelios website
 
-Static site (Astro → `dist/`) deployed to Cloudflare Workers static assets
-(`wrangler.jsonc` → `assets.directory: ./dist`). The design is a
+Static site (Astro → `dist/`) deployed to GitHub Pages from the repo
+`Intelios/Intelios.github.io` — the user-site repo, so it serves at the
+root https://intelios.github.io with no `base` path. The design is a
 Windows 8 Metro Start screen: flat square tiles, horizontal tile groups, light
 typography, no gradients, no rounded corners, no shadows.
 
@@ -12,8 +13,7 @@ typography, no gradients, no rounded corners, no shadows.
   for public repos at build time (see below).
 - `npm run check` — `astro check` type checking.
 - `npm run preview` — serve the built site.
-- `npm run deploy` — `wrangler deploy` (manual deploy; normal deploys go
-  through Workers Builds, see below).
+- Deploys happen in CI (`.github/workflows/deploy.yml`) on push to `main`.
 
 ## Design rules (do not break)
 
@@ -45,24 +45,32 @@ typography, no gradients, no rounded corners, no shadows.
 ## Release data flow
 
 - `src/lib/github.ts` fetches `releases/latest` per repo during
-  `astro build`. Uses `GITHUB_TOKEN` env if present; unauthenticated
-  (60 req/hr) is fine for 3 repos.
+  `astro build`. Uses `GITHUB_TOKEN` env if present (CI passes the
+  Actions-provided token automatically); unauthenticated (60 req/hr) is
+  fine for 3 repos.
 - On success it writes `src/lib/release-cache.json`; on failure it falls
   back to the cached entry, so deploys never break on API errors.
-- **Rebuild on release**: create a Workers Builds deploy hook (Workers →
-  this worker → Settings → Builds → Deploy hooks), store the URL as
-  `CLOUDFLARE_DEPLOY_HOOK` in each app repo, and add
-  `docs/release-hook.yml` there as a workflow. `nightly-rebuild.yml` in
-  this repo is the safety net (same secret needed here too).
+- **Rebuild on release**: add `docs/release-hook.yml` as a workflow in each
+  app repo. It sends a `repository_dispatch` event (`rebuild`) to this
+  repo, which triggers `deploy.yml`. Requires a fine-grained PAT
+  (Contents: read/write on this repo only) stored as `SITE_REBUILD_TOKEN`
+  in the app repo. The daily cron in `deploy.yml` is the safety net.
 
-## Cloudflare Workers settings
+## GitHub Pages settings
 
-- The repo is connected via Workers Builds: build command `npm run build`,
-  deploy handled by Wrangler using `wrangler.jsonc` (`assets.directory: ./dist`).
-- No Worker script — assets-only; routing serves each route's `index.html`.
-- `_headers` in `public/` is honoured for static asset responses.
-- Node version 20+ (set `NODE_VERSION` env if needed); optional
-  `GITHUB_TOKEN` env var for authenticated GitHub API calls at build.
+- Repo Settings → Pages → Source must be **GitHub Actions**. Deploys go
+  through `.github/workflows/deploy.yml` (`withastro/action@v3` builds,
+  `actions/deploy-pages@v4` publishes).
+- The workflow runs on push to `main`, on the daily `17 5 * * *` cron
+  (refreshes release data), on manual dispatch, and on the `rebuild`
+  `repository_dispatch` event sent by app repos.
+- Node version is set via the action's `node-version` input (20). The
+  Actions-provided `GITHUB_TOKEN` is passed to the build, so GitHub API
+  calls are authenticated.
+- Served at https://intelios.github.io — the repo name is the user-site
+  name, so the site lives at the root and no `base` path is needed.
+- GitHub Pages does not support custom headers (`public/_headers` is
+  gone); assets are cached ~10 minutes by default.
 
 ## Fonts
 
