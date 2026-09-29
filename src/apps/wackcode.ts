@@ -11,9 +11,9 @@ export const wackCode: AppDefinition = {
   tile: 'medium',
   glyph: terminalGlyph,
   description:
-    'A local macOS desktop interface for the Pi coding agent, built with Tauri, React, and Rust. Named connections and subscription sign-in, concurrent task workers, persistent sessions, optional Git worktrees, and a full Changes panel for reviewing, commenting, committing, and opening pull requests \u2014 with a polished UI on top of a proven harness.',
+    'A local macOS desktop interface for the Pi coding agent, built with Tauri, React, and Rust. Named connections and subscription sign-in, concurrent task workers, persistent sessions, optional Git worktrees, and a full Changes panel for reviewing, commenting, committing, and opening pull requests, with a polished UI on top of a proven harness.',
   status: 'in-development',
-  statusNote: 'In development \u2014 not yet released',
+  statusNote: 'In development, not yet released',
   platforms: ['macos'],
   download: { kind: 'none', note: 'WackCode is in active development and has no public release yet.' },
   features: [

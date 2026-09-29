@@ -28,7 +28,7 @@ const iconMeta = getIcon(app.slug);
 const iconSrc = typeof iconMeta === 'string' ? iconMeta : iconMeta?.src;
 ---
 
-<Base title={`${app.name} — Intelios`} description={app.description.slice(0, 160)}>
+<Base title={`${app.name} · Intelios`} description={app.description.slice(0, 160)}>
   <Panorama title={app.name} accent={accent} accentText={accentText} icon={iconSrc}>
     <section class="pano-section">
       <h2 class="pano-section-label">Overview</h2>

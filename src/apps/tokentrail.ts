@@ -7,14 +7,14 @@ export const tokenTrail: AppDefinition = {
   text: 'light',
   tile: 'medium',
   description:
-    'One dashboard for all the AI tokens you use across supported apps. TokenTrail reads the usage logs your AI tools already write on your machine and turns them into the data you can visualise and happily clear those tools cache files and not worry about losing your usage information as TokenTrail has it\'s own data safe and secure from cache wipes. TokenTrail supports countless apps. Free to use & fully open source.',
+    'One dashboard for all the AI tokens you use across supported apps. TokenTrail reads the usage logs your AI tools already write on your machine and turns them into data you can visualise, so you can happily clear those tools\' cache files and not worry about losing your usage information, as TokenTrail keeps its own copy, safe and secure from cache wipes. TokenTrail supports countless apps. Free to use & fully open source.',
   status: 'released',
   platforms: ['macos', 'windows', 'linux'],
   license: 'MIT',
   github: { owner: 'Intelios', repo: 'TokenTrail' },
   download: {
     kind: 'source-zip',
-    note: 'Desktop app built from source. Requires Bun and Rust \u2014 see the README for build instructions.',
+    note: 'Desktop app built from source. Requires Bun and Rust; see the README for build instructions.',
   },
   features: [
     { title: 'Overview', detail: 'Totals, sessions, active-day streak, cache hit rate, and spend at a glance.' },

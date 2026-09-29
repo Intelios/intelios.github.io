@@ -18,7 +18,7 @@ export const wackChatter: AppDefinition = {
   github: { owner: 'Intelios', repo: 'wackchatter' },
   download: {
     kind: 'source-zip',
-    note: 'Requires Bun. Unzip, run start.sh (Start.bat on Windows) \u2014 the launcher handles dependencies, builds the app, and opens your browser.',
+    note: 'Requires Bun. Unzip, run start.sh (Start.bat on Windows). The launcher handles dependencies, builds the app, and opens your browser.',
   },
   features: [
     { title: 'Chat', detail: 'Multiple chats per character, swipes, branching, regenerate, and a restorable trash bin.' },
@@ -26,7 +26,7 @@ export const wackChatter: AppDefinition = {
     { title: 'Character Creator Studio', detail: 'Full card editor with live token counts, a context budget meter, and real-time linting.' },
     { title: 'Character Co-Creator', detail: 'An AI design partner that drafts fields you file into the card with one click.' },
     { title: 'Prompt Manager', detail: 'Reorder prompts, depth injections, and marker prompts with a real tokenizer.' },
-    { title: 'Lorebooks', detail: 'World Info books with a full activation engine \u2014 keywords, regex, budget, groups.' },
+    { title: 'Lorebooks', detail: 'World Info books with a full activation engine: keywords, regex, budget, groups.' },
     { title: 'Memory Nexus', detail: 'Tracks characters, places, events, and relationships with a graph view.' },
     { title: 'Model Arena', detail: 'Blind side-by-side comparisons between models.' },
     { title: 'Guided Generations', detail: 'Steer replies with one-shot or per-chat guides.' },

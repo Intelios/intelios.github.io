@@ -7,14 +7,14 @@ export const mediaLogger: AppDefinition = {
   text: 'light',
   tile: 'wide',
   description:
-    'This is a media logging application covering various genres and a project I\'ve worked on the longest. It\'s something I personally use every single day to track the shows I watch, the games I play and the things I intend to watch in the future. It\'s got stats, collections, profiles auto generated for you and so much more. I really am proud of this project so I hope you\'ll give it a try and love it as much as I do. Everything is offline, and very few parts of the app connect online and those are all optional.',
+    'This is a media logging application covering various genres and the project I\'ve worked on the longest. It\'s something I personally use every single day to track the shows I watch, the games I play and the things I intend to watch in the future. It\'s got stats, collections, profiles auto-generated for you and so much more. I really am proud of this project, so I hope you\'ll give it a try and love it as much as I do. Everything is offline, and the few parts of the app that do connect online are all optional.',
   status: 'released',
   platforms: ['macos', 'windows'],
   license: 'Source available',
   github: { owner: 'Intelios', repo: 'Media-Logger' },
   download: {
     kind: 'source-zip',
-    note: 'Desktop app built from source. Requires Node.js, Rust, and the Tauri prerequisites \u2014 see the README for build instructions.',
+    note: 'Desktop app built from source. Requires Node.js, Rust, and the Tauri prerequisites; see the README for build instructions.',
   },
   features: [
     { title: 'Dashboard', detail: 'Totals, average rating, a featured pick, recent completions, and On This Day.' },
