@@ -1,12 +1,23 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { Platform, ReleaseInfo } from './app-schema';
+import type { Platform, ReleaseAsset, ReleaseBuild, ReleaseInfo } from './app-schema';
 
 interface CacheEntry extends ReleaseInfo {
   fetchedAt: string;
 }
 
 type ReleaseCache = Record<string, CacheEntry>;
+
+interface GitHubRelease {
+  tag_name: string;
+  published_at: string;
+  html_url: string;
+  zipball_url: string;
+  body?: string;
+  draft: boolean;
+  prerelease: boolean;
+  assets: { name: string; browser_download_url: string; size: number }[];
+}
 
 const cachePath = join(process.cwd(), 'src', 'lib', 'release-cache.json');
 
@@ -22,15 +33,31 @@ function readCache(): ReleaseCache {
 let cache: ReleaseCache = readCache();
 let cacheDirty = false;
 
-function platformFor(name: string): Platform | 'other' {
+const platformOrder: Platform[] = ['macos', 'windows', 'linux'];
+
+/** Installer extensions only, so updater bundles, signatures and checksums are skipped. */
+function platformFor(name: string): Platform | null {
   const n = name.toLowerCase();
-  if (/\.dmg$|\.app\.tar\.gz$|macos|darwin|\.pkg$/.test(n)) return 'macos';
-  if (/\.msi$|\.exe$|windows|win32|win64|\.msix$/.test(n)) return 'windows';
-  if (/\.appimage$|\.deb$|\.rpm$|linux|\.flatpak$/.test(n)) return 'linux';
-  return 'other';
+  if (/\.(dmg|pkg)$/.test(n)) return 'macos';
+  if (/\.(exe|msi|msix)$/.test(n)) return 'windows';
+  if (/\.(appimage|deb|rpm|flatpak)$/.test(n)) return 'linux';
+  return null;
 }
 
-/** Fetch the latest GitHub release for a repo at build time.
+/** The first installer for each platform, in platformOrder. */
+function installers(release: GitHubRelease): ReleaseAsset[] {
+  const byPlatform = new Map<Platform, ReleaseAsset>();
+  for (const a of release.assets) {
+    const platform = platformFor(a.name);
+    if (platform && !byPlatform.has(platform)) {
+      byPlatform.set(platform, { name: a.name, url: a.browser_download_url, size: a.size, platform });
+    }
+  }
+  return platformOrder.flatMap((p) => byPlatform.get(p) ?? []);
+}
+
+/** Fetch the latest GitHub release for a repo at build time, plus the newest
+ *  release that has installers attached (not every release is built).
  *  Uses GITHUB_TOKEN when set. On failure, falls back to the
  *  committed release-cache.json entry (or null if none). */
 export async function getLatestRelease(owner: string, repo: string): Promise<ReleaseInfo | null> {
@@ -43,30 +70,28 @@ export async function getLatestRelease(owner: string, repo: string): Promise<Rel
     const token = process.env.GITHUB_TOKEN;
     if (token) headers.Authorization = `Bearer ${token}`;
 
-    const res = await fetch(`https://api.github.com/repos/${key}/releases/latest`, { headers });
+    const res = await fetch(`https://api.github.com/repos/${key}/releases?per_page=100`, { headers });
     if (!res.ok) throw new Error(`GitHub API ${res.status} for ${key}`);
-    const data = (await res.json()) as {
-      tag_name: string;
-      name?: string;
-      published_at: string;
-      html_url: string;
-      zipball_url: string;
-      body?: string;
-      assets: { name: string; browser_download_url: string; size: number }[];
-    };
+    const releases = ((await res.json()) as GitHubRelease[]).filter((r) => !r.draft && !r.prerelease);
+    const latest = releases[0];
+    if (!latest) throw new Error(`no published releases for ${key}`);
+
+    let build: ReleaseBuild | undefined;
+    for (const r of releases) {
+      const assets = installers(r);
+      if (assets.length > 0) {
+        build = { version: r.tag_name, assets };
+        break;
+      }
+    }
 
     const info: ReleaseInfo = {
-      version: data.tag_name,
-      date: data.published_at.slice(0, 10),
-      htmlUrl: data.html_url,
-      zipballUrl: data.zipball_url,
-      notes: data.body ?? '',
-      assets: data.assets.map((a) => ({
-        name: a.name,
-        url: a.browser_download_url,
-        size: a.size,
-        platform: platformFor(a.name),
-      })),
+      version: latest.tag_name,
+      date: latest.published_at.slice(0, 10),
+      htmlUrl: latest.html_url,
+      zipballUrl: latest.zipball_url,
+      notes: latest.body ?? '',
+      build,
     };
 
     cache = { ...cache, [key]: { ...info, fetchedAt: new Date().toISOString() } };

@@ -17,8 +17,8 @@ export const wackCode: AppDefinition = {
   license: 'AGPL-3.0',
   github: { owner: 'Intelios', repo: 'wackcode' },
   download: {
-    kind: 'source-zip',
-    note: 'Desktop app built from source for Apple Silicon Macs on macOS 12 or later. Requires Rust, Xcode Command Line Tools, Node.js 24, and pnpm; see the README for build instructions.',
+    kind: 'assets',
+    note: 'For Apple Silicon Macs on macOS 12 or later. The app isn\u2019t notarized: if macOS blocks the first launch, open System Settings \u203a Privacy & Security and choose Open Anyway. Building from source requires Rust, Xcode Command Line Tools, Node.js 24, and pnpm; see the README.',
   },
   features: [
     { title: 'Pi harness', detail: 'A trusted coding agent under the hood, with persistent session trees.' },

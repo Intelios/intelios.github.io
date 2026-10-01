@@ -13,8 +13,8 @@ export const mediaLogger: AppDefinition = {
   license: 'Source available',
   github: { owner: 'Intelios', repo: 'Media-Logger' },
   download: {
-    kind: 'source-zip',
-    note: 'Desktop app built from source. Requires Node.js, Rust, and the Tauri prerequisites; see the README for build instructions.',
+    kind: 'assets',
+    note: 'The macOS build is for Apple Silicon and isn\u2019t notarized: if macOS blocks the first launch, open System Settings \u203a Privacy & Security and choose Open Anyway. Windows may show a SmartScreen prompt; choose More info \u203a Run anyway. Building from source requires Node.js, Rust, and the Tauri prerequisites; see the README.',
   },
   features: [
     { title: 'Dashboard', detail: 'Totals, average rating, a featured pick, recent completions, and On This Day.' },

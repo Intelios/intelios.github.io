@@ -5,8 +5,24 @@
     "htmlUrl": "https://github.com/Intelios/Media-Logger/releases/tag/4.4.5",
     "zipballUrl": "https://api.github.com/repos/Intelios/Media-Logger/zipball/4.4.5",
     "notes": "- Can now reuse a previous year's award categories.\r\n\r\n**Full Changelog**: https://github.com/Intelios/Media-Logger/compare/4.4.4...4.4.5",
-    "assets": [],
-    "fetchedAt": "2026-10-01T12:22:06.646Z"
+    "build": {
+      "version": "4.4.5",
+      "assets": [
+        {
+          "name": "Media-Logger-4.4.5-macos.dmg",
+          "url": "https://github.com/Intelios/Media-Logger/releases/download/4.4.5/Media-Logger-4.4.5-macos.dmg",
+          "size": 13583922,
+          "platform": "macos"
+        },
+        {
+          "name": "Media-Logger-4.4.5-windows-setup.exe",
+          "url": "https://github.com/Intelios/Media-Logger/releases/download/4.4.5/Media-Logger-4.4.5-windows-setup.exe",
+          "size": 8232180,
+          "platform": "windows"
+        }
+      ]
+    },
+    "fetchedAt": "2026-10-01T13:14:24.619Z"
   },
   "Intelios/wackchatter": {
     "version": "2.2.2",
@@ -14,8 +30,7 @@
     "htmlUrl": "https://github.com/Intelios/wackchatter/releases/tag/2.2.2",
     "zipballUrl": "https://api.github.com/repos/Intelios/wackchatter/zipball/2.2.2",
     "notes": "- Further Improvements to Preset Co-Creator all in the testing panel:\r\n  - In the testing panel can now choose your current preset your working on or any other preset in your library or references.\r\n  - Can now batch multiple requests from the testing panel to send to your co-creator.\r\n  - Can now have multiple chats ongoing in the testing panel.\r\n\r\n**Full Changelog**: https://github.com/Intelios/wackchatter/compare/2.2.1...2.2.2",
-    "assets": [],
-    "fetchedAt": "2026-10-01T12:22:06.711Z"
+    "fetchedAt": "2026-10-01T13:14:24.760Z"
   },
   "Intelios/TokenTrail": {
     "version": "1.11",
@@ -23,8 +38,24 @@
     "htmlUrl": "https://github.com/Intelios/TokenTrail/releases/tag/1.11",
     "zipballUrl": "https://api.github.com/repos/Intelios/TokenTrail/zipball/1.11",
     "notes": "- Major performance improvements to the app with better database/SQlite management, better antigravity & devin CLI tracking and reworked rust commands to improve performance massively in the app.\r\n- Average Tokens per call changed to Average Tokens per Day\r\n- Mimo 2.6 Pro pricing added\r\n- Mimo 2.6 Flash pricing added\r\n- LongCat 2.5 Preview pricing added\r\n\r\n**Full Changelog**: https://github.com/Intelios/TokenTrail/compare/1.10.1...1.11",
-    "assets": [],
-    "fetchedAt": "2026-10-01T12:22:06.841Z"
+    "build": {
+      "version": "1.11",
+      "assets": [
+        {
+          "name": "TokenTrail-1.11-macos.dmg",
+          "url": "https://github.com/Intelios/TokenTrail/releases/download/1.11/TokenTrail-1.11-macos.dmg",
+          "size": 5633428,
+          "platform": "macos"
+        },
+        {
+          "name": "TokenTrail-1.11-windows-setup.exe",
+          "url": "https://github.com/Intelios/TokenTrail/releases/download/1.11/TokenTrail-1.11-windows-setup.exe",
+          "size": 4574122,
+          "platform": "windows"
+        }
+      ]
+    },
+    "fetchedAt": "2026-10-01T13:14:25.122Z"
   },
   "Intelios/wackcode": {
     "version": "1.0.2",
@@ -32,7 +63,17 @@
     "htmlUrl": "https://github.com/Intelios/wackcode/releases/tag/1.0.2",
     "zipballUrl": "https://api.github.com/repos/Intelios/wackcode/zipball/1.0.2",
     "notes": "- Updated Pi from 0.87.1 to 0.99.2\r\n- Models now automatically refresh on launch of the app for models you are accessing via subscription.\r\n\r\n**Full Changelog**: https://github.com/Intelios/wackcode/compare/1.0.1...1.0.2",
-    "assets": [],
-    "fetchedAt": "2026-10-01T12:22:06.775Z"
+    "build": {
+      "version": "1.0.2",
+      "assets": [
+        {
+          "name": "WackCode-1.0.2-macos.dmg",
+          "url": "https://github.com/Intelios/wackcode/releases/download/1.0.2/WackCode-1.0.2-macos.dmg",
+          "size": 240327059,
+          "platform": "macos"
+        }
+      ]
+    },
+    "fetchedAt": "2026-10-01T13:14:24.985Z"
   }
 }

@@ -59,7 +59,13 @@ export interface ReleaseAsset {
   name: string;
   url: string;
   size: number;
-  platform: Platform | 'other';
+  platform: Platform;
+}
+
+/** A release with installers attached: one asset per platform. */
+export interface ReleaseBuild {
+  version: string;
+  assets: ReleaseAsset[];
 }
 
 export interface ReleaseInfo {
@@ -68,5 +74,7 @@ export interface ReleaseInfo {
   htmlUrl: string;
   zipballUrl: string;
   notes: string;
-  assets: ReleaseAsset[];
+  /** Newest release that has installers; can be older than `version`,
+   *  since not every release is built. */
+  build?: ReleaseBuild;
 }

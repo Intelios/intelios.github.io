@@ -8,10 +8,7 @@ interface Props {
 }
 const { app, release } = Astro.props;
 const dl = app.download;
-
-const assetsByPlatform = release
-  ? [...new Set(release.assets.filter((a) => a.platform !== 'other').map((a) => a.platform))]
-  : [];
+const build = release?.build;
 ---
 
 {app.status === 'in-development' ? (
@@ -35,23 +32,22 @@ const assetsByPlatform = release
   </div>
 ) : dl.kind === 'assets' ? (
   <div class="dl-list">
-    {release && assetsByPlatform.length > 0 ? (
-      release.assets
-        .filter((a) => a.platform !== 'other')
-        .map((a) => (
-          <a class="dl-btn" href={a.url}>
-            Download for {platformLabel[a.platform as 'macos' | 'windows' | 'linux']}
-            <span class="dl-meta">{formatSize(a.size)} · {release.version}</span>
-          </a>
-        ))
+    {build?.assets.map((a) => (
+      <a class="dl-btn" href={a.url}>
+        Download for {platformLabel[a.platform]}
+        <span class="dl-meta">{build.version} · {formatSize(a.size)}</span>
+      </a>
+    ))}
+    {release ? (
+      <a class:list={['dl-btn', build && 'dl-btn--ghost']} href={release.zipballUrl}>
+        Source code
+        <span class="dl-meta">{release.version} · {formatDate(release.date)}</span>
+      </a>
     ) : app.github ? (
       <a class="dl-btn" href={`https://github.com/${app.github.owner}/${app.github.repo}/releases/latest`} target="_blank" rel="noopener noreferrer">
         View release on GitHub
       </a>
     ) : null}
-    {release && assetsByPlatform.length > 0 && (
-      <p class="dl-note">Version {release.version} · {formatDate(release.date)}</p>
-    )}
     {dl.note && <p class="dl-note">{dl.note}</p>}
   </div>
 ) : (

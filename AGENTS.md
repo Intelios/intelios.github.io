@@ -38,18 +38,26 @@ typography, no gradients, no rounded corners, no shadows.
    for the gallery, the live-tile faces, and the icon; the first
    screenshot becomes a tile face automatically.
 4. If the app has a public GitHub repo with releases, set `github` —
-   version, date, assets, and release notes are fetched at build time.
-   `download.kind`: `'assets'` (per-platform binaries), `'source-zip'`
-   (tag zipball), or `'none'`.
+   version, date, installers, and release notes are fetched at build time.
+   `download.kind`: `'assets'` (per-platform installers plus the latest
+   source zip), `'source-zip'` (tag zipball), or `'none'`.
 
 ## Release data flow
 
-- `src/lib/github.ts` fetches `releases/latest` per repo during
-  `astro build`. Uses `GITHUB_TOKEN` env if present (CI passes the
+- `src/lib/github.ts` lists releases per repo during `astro build`: the
+  newest published one gives the version, date, and notes; the newest one
+  with installers attached (`.dmg`/`.exe`/…, one per platform) gives the
+  download buttons, since not every release is built. Uses `GITHUB_TOKEN` env if present (CI passes the
   Actions-provided token automatically); unauthenticated (60 req/hr) is
   fine for 3 repos.
 - On success it writes `src/lib/release-cache.json`; on failure it falls
   back to the cached entry, so deploys never break on API errors.
+- **Installers**: Media Logger, TokenTrail, and WackCode each have
+  `.github/workflows/build.yml`, which builds macOS (Apple Silicon) and
+  Windows installers (WackCode: macOS only), attaches them to the release,
+  and sends the `rebuild` event. It only runs when the release notes
+  contain `<!-- build -->`, or when started by hand with a tag. No Linux
+  builds: they can't be tested.
 - **Rebuild on release**: add `docs/release-hook.yml` as a workflow in each
   app repo. It sends a `repository_dispatch` event (`rebuild`) to this
   repo, which triggers `deploy.yml`. Requires a fine-grained PAT
