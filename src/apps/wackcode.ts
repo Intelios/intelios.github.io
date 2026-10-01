@@ -12,10 +12,14 @@ export const wackCode: AppDefinition = {
   glyph: terminalGlyph,
   description:
     'A local macOS desktop interface for the Pi coding agent, built with Tauri, React, and Rust. Named connections and subscription sign-in, concurrent task workers, persistent sessions, optional Git worktrees, and a full Changes panel for reviewing, commenting, committing, and opening pull requests, with a polished UI on top of a proven harness.',
-  status: 'in-development',
-  statusNote: 'In development, not yet released',
+  status: 'released',
   platforms: ['macos'],
-  download: { kind: 'none', note: 'WackCode is in active development and has no public release yet.' },
+  license: 'AGPL-3.0',
+  github: { owner: 'Intelios', repo: 'wackcode' },
+  download: {
+    kind: 'source-zip',
+    note: 'Desktop app built from source for Apple Silicon Macs on macOS 12 or later. Requires Rust, Xcode Command Line Tools, Node.js 24, and pnpm; see the README for build instructions.',
+  },
   features: [
     { title: 'Pi harness', detail: 'A trusted coding agent under the hood, with persistent session trees.' },
     { title: 'Connections', detail: 'OpenAI-compatible endpoints plus subscription sign-in for Codex, Copilot, and more.' },
