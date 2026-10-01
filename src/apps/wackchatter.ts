@@ -8,7 +8,7 @@ export const wackChatter: AppDefinition = {
   name: 'WackChatter',
   color: '#c2ee4a',
   text: 'dark',
-  tile: 'wide',
+  tile: 'medium',
   glyph: messagesGlyph,
   description:
     'A chat frontend for cloud LLMs with character cards, lorebooks, personas, and long-term story memory, running locally in your browser. Uses your own API keys; nothing is sent anywhere except the model you pick. Your existing SillyTavern character cards and presets work here without conversion.',

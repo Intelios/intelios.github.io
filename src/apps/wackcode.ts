@@ -9,7 +9,7 @@ export const wackCode: AppDefinition = {
   pageAccent: '#c2ee4a',
   text: 'light',
   pageAccentText: 'dark',
-  tile: 'medium',
+  tile: 'wide',
   glyph: terminalGlyph,
   description:
     'A local macOS desktop interface for the Pi coding agent, built with Tauri, React, and Rust. Named connections and subscription sign-in, concurrent task workers, persistent sessions, optional Git worktrees, and a full Changes panel for reviewing, commenting, committing, and opening pull requests, with a polished UI on top of a proven harness.',

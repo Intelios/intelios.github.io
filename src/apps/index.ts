@@ -18,9 +18,9 @@ export const groups: TileGroup[] = [
     name: 'Apps',
     tiles: [
       { kind: 'app', app: mediaLogger },
-      { kind: 'app', app: wackChatter },
-      { kind: 'app', app: tokenTrail },
       { kind: 'app', app: wackCode },
+      { kind: 'app', app: tokenTrail },
+      { kind: 'app', app: wackChatter },
     ],
   },
   {
