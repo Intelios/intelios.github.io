@@ -21,8 +21,9 @@ const { title, accent, accentText = '#ffffff', icon } = Astro.props;
 </main>
 
 <script>
-  import { initHorizontalScroll, initLightbox, initTileExit } from '../scripts/metro';
+  import { initHorizontalScroll, initLightbox, initTileExit, initScrollHint } from '../scripts/metro';
   initHorizontalScroll();
   initLightbox();
   initTileExit();
+  initScrollHint();
 </script>

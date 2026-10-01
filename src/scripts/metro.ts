@@ -129,6 +129,7 @@ function launchTile(tile: HTMLElement, url: URL): void {
   }
   document.body.appendChild(ghost);
   tile.style.visibility = 'hidden';
+  document.querySelector('.scroll-hint')?.remove();
 
   // Splash payload the destination page picks up before its first paint.
   try {
@@ -321,6 +322,57 @@ export function initHorizontalScroll(root: ParentNode = document): void {
       { passive: false },
     );
   });
+}
+
+/* ---- Scroll hint: a faint "Scroll →" in the corner until the visitor ----
+   ---- first scrolls sideways; remembered, so it only ever shows once. ---- */
+const HINT_KEY = 'hscroll-learned';
+
+export function initScrollHint(): void {
+  const el = document.querySelector<HTMLElement>('[data-hscroll]');
+  if (!el) return;
+  try {
+    if (localStorage.getItem(HINT_KEY)) return;
+  } catch { /* storage blocked — hint shows per visit instead */ }
+
+  // Baseline taken after initTileReturn's scrollIntoView, so only real scrolling counts.
+  const start = el.scrollLeft;
+  let hint: HTMLButtonElement | null = null;
+  let done = false;
+
+  const fit = () => hint?.classList.toggle('is-shown', el.scrollWidth - el.clientWidth > 48);
+  const learn = () => {
+    if (Math.abs(el.scrollLeft - start) < 40) return;
+    done = true;
+    el.removeEventListener('scroll', learn);
+    window.removeEventListener('resize', fit);
+    try {
+      localStorage.setItem(HINT_KEY, '1');
+    } catch { /* ignore */ }
+    const h = hint;
+    h?.classList.remove('is-shown');
+    setTimeout(() => h?.remove(), 700);
+  };
+  el.addEventListener('scroll', learn, { passive: true });
+
+  // Wait for the tile fly-in to settle so the hint doesn't compete with it.
+  setTimeout(() => {
+    if (done) return;
+    hint = document.createElement('button');
+    hint.type = 'button';
+    hint.className = 'scroll-hint';
+    hint.tabIndex = -1; // keyboard focus already scrolls tiles into view
+    hint.setAttribute('aria-hidden', 'true');
+    const verb = window.matchMedia('(pointer: coarse)').matches ? 'Swipe' : 'Scroll';
+    hint.innerHTML = `<span>${verb}</span><svg viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6" /></svg>`;
+    hint.addEventListener('click', () => {
+      el.scrollBy({ left: el.clientWidth * 0.75, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+    document.body.appendChild(hint);
+    void hint.offsetWidth; // commit opacity 0 so the fade-in transitions
+    fit();
+    window.addEventListener('resize', fit);
+  }, 1600);
 }
 
 /* ---- Lightbox for galleries. ---- */
