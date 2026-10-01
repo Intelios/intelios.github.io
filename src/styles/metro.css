@@ -49,20 +49,6 @@ img { display: block; }
 .start-title .start {
   font-weight: 600;
 }
-.start-user {
-  width: 44px;
-  height: 44px;
-  background: var(--bg-raise);
-  border: 1px solid var(--hairline);
-  display: grid;
-  place-items: center;
-  color: var(--fg-dim);
-  text-decoration: none;
-  transition: border-color 120ms;
-}
-.start-user:hover, .start-user:focus-visible { border-color: var(--fg); color: var(--fg); }
-.start-user svg { width: 26px; height: 26px; fill: currentColor; }
-
 .start-groups {
   display: flex;
   gap: 96px;
