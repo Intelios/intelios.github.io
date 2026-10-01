@@ -21,6 +21,8 @@ export interface AppDefinition {
   pageAccent?: string;
   /** Text colour on the tile colour. */
   text: 'light' | 'dark';
+  /** Text colour on `pageAccent`; defaults to `text`. */
+  pageAccentText?: 'light' | 'dark';
   tile: TileSize;
   /** Inline SVG path data (24x24 stroke grid) used when no icon image exists
    *  (icons are resolved by convention from src/assets/apps/<slug>/icon.*). */

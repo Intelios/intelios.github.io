@@ -8,6 +8,7 @@ export const wackCode: AppDefinition = {
   color: '#14160f',
   pageAccent: '#c2ee4a',
   text: 'light',
+  pageAccentText: 'dark',
   tile: 'medium',
   glyph: terminalGlyph,
   description:

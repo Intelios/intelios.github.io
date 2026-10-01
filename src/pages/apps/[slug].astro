@@ -22,7 +22,7 @@ const { app } = Astro.props;
 const releases = await getReleasesFor([app]);
 const release: ReleaseInfo | undefined = releases.get(releaseKey(app) ?? '');
 const accent = app.pageAccent ?? app.color;
-const accentText = app.text === 'dark' ? '#12140a' : '#ffffff';
+const accentText = (app.pageAccentText ?? app.text) === 'dark' ? '#12140a' : '#ffffff';
 const screenshots = getScreenshots(app.slug);
 const iconMeta = getIcon(app.slug);
 const iconSrc = typeof iconMeta === 'string' ? iconMeta : iconMeta?.src;
